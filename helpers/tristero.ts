@@ -49,8 +49,6 @@ type DecodedV3SendOrder = {
   orderType: string;
   srcToken: string;
   srcQuantity: bigint;
-  dstToken: string;
-  dstQuantity: bigint;
   customData: string;
 };
 
@@ -1159,11 +1157,6 @@ function addDecodedV3SendOrderVolume(
 ) {
   const srcTokenAddress = normalizeVolumeToken(options.chain, decodedOrder.srcToken);
   if (srcTokenAddress) dailyVolume.add(srcTokenAddress, decodedOrder.srcQuantity);
-
-  if (decodedOrder.orderType.toUpperCase() !== "MARGIN") {
-    const dstTokenAddress = normalizeVolumeToken(options.chain, decodedOrder.dstToken);
-    if (dstTokenAddress) dailyVolume.add(dstTokenAddress, decodedOrder.dstQuantity);
-  }
 
   const marginLoan = decodeMarginLoan(decodedOrder);
   if (marginLoan?.quantity) {
